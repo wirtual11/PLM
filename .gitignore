@@ -1,0 +1,11 @@
+# uv virtual environments
+src/.venv
+
+# uv project data / cache
+src/.uv/
+
+# PEP 582 local packages (used by uv if enabled)
+__pypackages__/
+
+# Optional: Python version file created by uv
+.python-version
