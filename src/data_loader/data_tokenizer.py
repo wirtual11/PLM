@@ -21,10 +21,12 @@ class ChunkingConfig:
 class TextChunk:
     chunk_id: int
     text: str
+    token_ids: List[int]
+    attention_mask: List[int]
     token_count: int
     start_token: int
     end_token: int
-    metadata: Dict[str, str] 
+    metadata: Dict[str, str]
 
 class TokenChunker:
     """
@@ -94,11 +96,12 @@ class TokenChunker:
         metadata: Optional[Dict[str, Any]] = None,
     ) -> List[TextChunk]:
         """
-        End-to-end chunking:
-          1) normalize
-          2) tokenize
-          3) split into overlapping chunks
-          4) decode chunk text
+        End-to-end tokenization and chunking:
+          1) normalize text
+          2) tokenize into token IDs
+          3) split into overlapping windows
+          4) build token_ids + attention_mask (padded to max_tokens)
+          5) decode chunk text for readability
         """
         clean = self.normalize_text(text)
         if not clean:
@@ -110,6 +113,7 @@ class TokenChunker:
 
         chunks: List[TextChunk] = []
         meta = metadata.copy() if metadata else {}
+        pad_id: int = int(self.tokenizer.pad_token_id) if self.tokenizer.pad_token_id is not None else 0
 
         start = 0
         chunk_id = 0
@@ -123,14 +127,22 @@ class TokenChunker:
                 end = self._find_clean_token_boundary(token_ids, start, proposed_end)
 
             chunk_ids = token_ids[start:end]
+            actual_len = len(chunk_ids)
             chunk_text = self._decode(chunk_ids).strip()
 
             if chunk_text:
+                # Pad token_ids to max_tokens and build the attention mask
+                padding_len = self.config.max_tokens - actual_len
+                padded_ids = chunk_ids + [pad_id] * padding_len
+                attention_mask = [1] * actual_len + [0] * padding_len
+
                 chunks.append(
                     TextChunk(
                         chunk_id=chunk_id,
                         text=chunk_text,
-                        token_count=len(chunk_ids),
+                        token_ids=padded_ids,
+                        attention_mask=attention_mask,
+                        token_count=actual_len,
                         start_token=start,
                         end_token=end,
                         metadata=meta.copy(),

@@ -7,6 +7,10 @@ src/.uv/
 # PEP 582 local packages (used by uv if enabled)
 __pypackages__/
 
+# Python bytecode
+*.pyc
+
 # Optional: Python version file created by uv
 .python-version
 .vscode
+src/data_loader/__pycache__/data_preprocessor.cpython-312.pyc
