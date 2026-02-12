@@ -219,24 +219,3 @@ class TokenChunker:
             return proposed_end
 
         return candidate_end
-
-"""
-#if __name__ == "__main__":
-    cfg = ChunkingConfig(
-        tokenizer_name="bert-base-uncased",
-        max_tokens=120,
-        overlap_tokens=20,
-        boundary_aware=True,
-    )
-    chunker = TokenChunker(cfg)
-
- 
-
-    chunks = chunker.chunk_text(sample, metadata={"source": "sample.txt"})
-    for c in chunks:
-        print(
-            f"[{c.chunk_id}] tokens={c.token_count} "
-            f"range=({c.start_token}:{c.end_token})\n{c.text}\n---"
-        )
-
-"""
