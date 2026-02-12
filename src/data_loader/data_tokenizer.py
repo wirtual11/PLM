@@ -1,10 +1,9 @@
 from __future__ import annotations
-
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, cast
+from transformers import AutoTokenizer, PreTrainedTokenizerBase
 import unicodedata
 import re
-from transformers import AutoTokenizer, PreTrainedTokenizerBase
 
 @dataclass
 class ChunkingConfig:
@@ -18,7 +17,6 @@ class ChunkingConfig:
     # how far back we search for a cleaner boundary in token-space (chars after decode)
     boundary_search_window: int = 220
 
-
 @dataclass
 class TextChunk:
     chunk_id: int
@@ -27,7 +25,6 @@ class TextChunk:
     start_token: int
     end_token: int
     metadata: Dict[str, str] 
-
 
 class TokenChunker:
     """

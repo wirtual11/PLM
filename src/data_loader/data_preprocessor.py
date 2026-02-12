@@ -13,7 +13,6 @@ class Preprocessor:
 
         return result
     
-
     def preprocess_single_text(
             self,
             text: str,
