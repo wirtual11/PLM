@@ -7,5 +7,7 @@ requires-python = ">=3.12"
 dependencies = [
     "pypdf>=6.7.0",
     "rich>=14.3.2",
+    "torch>=2.10.0",
+    "transformers[torch]>=5.1.0",
     "typer>=0.21.2",
 ]

@@ -1,5 +1,9 @@
 {
     "python.analysis.extraPaths": [
         "./src/data_loader"
-    ]
+    ],
+    "python-envs.defaultEnvManager": "ms-python.python:system",
+    "python.defaultInterpreterPath": "${workspaceFolder}/src/.venv/bin/python",
+    "python.terminal.activateEnvironment": true,
+    "python-envs.pythonProjects": []
 }
