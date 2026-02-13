@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "accelerate>=1.7.0",
     "pypdf>=6.7.0",
     "rich>=14.3.2",
     "torch>=2.10.0",

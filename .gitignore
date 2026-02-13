@@ -12,5 +12,10 @@ __pypackages__/
 
 # Optional: Python version file created by uv
 .python-version
+
+# Other
 .vscode
-src/data_loader/__pycache__/data_preprocessor.cpython-312.pyc
+src/data_loader/__pycache__/
+output/
+src/uv.lock
+
