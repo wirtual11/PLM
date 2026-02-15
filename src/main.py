@@ -1,6 +1,7 @@
 from data_loader.file_loader import FileLoader
 from data_loader.data_preprocessor import Preprocessor
 from data_loader.data_tokenizer import ChunkingConfig, TokenChunker
+from model.chat import Chat, ChatConfig
 from model.training import Training, TrainingConfig
 
 
@@ -29,8 +30,8 @@ def main() -> None:
         tokenizer_name="bert-base-uncased",
         max_seq_length=120,      # match chunking max_tokens
         n_positions=128,         # must be >= max_seq_length
-        epochs=3,
-        per_device_train_batch_size=8,
+        epochs=10,
+        per_device_train_batch_size=16,
         learning_rate=5e-4,
         output_dir="./output",
     )
@@ -38,8 +39,20 @@ def main() -> None:
     trainer: Training = Training(all_chunks, config=training_config)
     trainer.train()
     trainer.evaluate()
-    trainer.save()
+    saved_path = trainer.save()
 
+    # ---- Interactive chat ---------------------------------------------------
+    chat: Chat = Chat(
+        model_dir=str(saved_path),
+        config=ChatConfig(
+            max_new_tokens=200,
+            temperature=0.8,
+            top_k=50,
+            top_p=0.95,
+            repetition_penalty=1.2,
+        ),
+    )
+    chat.start()
 
 if __name__ == "__main__":
     main()
